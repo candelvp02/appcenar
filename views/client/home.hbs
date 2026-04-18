@@ -1,26 +1,18 @@
-<div class="page-header">
-  <div>
-    <h1 class="page-title">Hola, <span style="color:var(--orange);">{{user.name}}</span> 👋</h1>
-    <p class="page-subtitle">¿Qué vas a pedir hoy?</p>
-  </div>
-</div>
-
-<div class="type-grid">
-  {{#each commerceTypes}}
-    <a href="/client/commerces/{{_id}}" class="type-card">
-      {{#if icon}}
-        <img src="{{icon}}" alt="{{name}}" class="type-card-icon" />
-      {{else}}
-        <div class="type-card-icon-placeholder">
-          <i class="bi bi-shop"></i>
+<div class="container">
+    <h2 class="mb-4 text-center">¿Qué deseas comer hoy?</h2>
+    <div class="row">
+        {{#each commerceTypes}}
+        <div class="col-md-3 col-sm-6 mb-4">
+            <a href="/cliente/comercios/tipo/{{this._id}}" class="text-decoration-none">
+                <div class="card text-center card-hover">
+                    <div class="card-body">
+                        <i class="fas fa-store fa-4x mb-3 text-primary"></i>
+                        <h5 class="card-title">{{this.name}}</h5>
+                        <p class="card-text text-muted">{{this.description}}</p>
+                    </div>
+                </div>
+            </a>
         </div>
-      {{/if}}
-      <span class="type-card-name">{{name}}</span>
-    </a>
-  {{else}}
-    <div class="empty-state col-span-full">
-      <i class="bi bi-shop-window"></i>
-      <p>No hay tipos de comercios disponibles aún.</p>
+        {{/each}}
     </div>
-  {{/each}}
 </div>

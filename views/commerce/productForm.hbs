@@ -1,3 +1,18 @@
+<style>
+  /* Garantizar que los selects y opciones tengan texto negro sobre fondo blanco */
+  select.form-select,
+  select.form-select option {
+    color: #000000 !important;
+    background-color: #ffffff !important;
+  }
+  /* Para cualquier select dentro del formulario */
+  form select,
+  form select option {
+    color: #000000 !important;
+    background-color: #ffffff !important;
+  }
+</style>
+
 <div class="row justify-content-center">
     <div class="col-md-8">
         <div class="card shadow">
@@ -20,10 +35,10 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Categoría</label>
-                        <select name="categoryId" class="form-select" required>
-                            <option value="">Seleccionar categoría</option>
+                        <select name="categoryId" class="form-select" style="color: #000000 !important; background-color: #ffffff !important;" required>
+                            <option value="" style="color: #000000; background-color: #ffffff;">Seleccionar categoría</option>
                             {{#each categories}}
-                                <option value="{{this._id}}" {{#ifCond this._id '===' ../product.categoryId}}selected{{/ifCond}}>{{this.name}}</option>
+                                <option value="{{this._id}}" style="color: #000000; background-color: #ffffff;" {{#ifCond this._id '===' ../product.categoryId}}selected{{/ifCond}}>{{this.name}}</option>
                             {{/each}}
                         </select>
                     </div>

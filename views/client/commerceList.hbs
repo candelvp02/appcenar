@@ -1,10 +1,10 @@
-<a href="/client/home" class="back-btn"><i class="bi bi-arrow-left"></i> Volver</a>
+<a href="/cliente/catalogo/" class="btn btn-secondary mb-3"><i class="bi bi-arrow-left"></i> Volver</a>
 
 <div class="page-header">
   <h1 class="page-title"><i class="bi bi-shop"></i> {{commerceType.name}}</h1>
 </div>
 
-<form action="/client/commerces/{{commerceType._id}}" method="GET" class="search-bar mb-3">
+<form action="/cliente/comercios/tipo/{{commerceType._id}}" method="GET" class="search-bar mb-3">
   <input type="text" name="search" class="form-control" placeholder="Buscar comercio por nombre..." value="{{search}}" />
   <button type="submit" class="btn btn-danger"><i class="bi bi-search"></i></button>
 </form>
@@ -15,29 +15,28 @@
 
 <div class="commerce-list">
   {{#each commerces}}
-    <div class="commerce-item" style="text-decoration:none;">
-      <a href="/client/commerces/{{../commerceType._id}}/catalog/{{_id}}" style="display:flex;align-items:center;gap:1rem;flex:1;text-decoration:none;color:inherit;">
+    <div class="commerce-item" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #eee; padding: 1rem 0;">
+      <a href="/cliente/catalogo/{{_id}}" style="display: flex; align-items: center; gap: 1rem; flex: 1; text-decoration: none; color: inherit;">
         {{#if logo}}
-          <img src="{{logo}}" alt="{{name}}" class="commerce-logo" />
+          <img src="/uploads/{{logo}}" alt="{{name}}" class="commerce-logo" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;" />
         {{else}}
-          <div class="commerce-logo-placeholder"><i class="bi bi-shop"></i></div>
+          <div class="commerce-logo-placeholder" style="width: 50px; height: 50px; background: #f0f0f0; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+            <i class="bi bi-shop"></i>
+          </div>
         {{/if}}
-        <span class="commerce-name">{{name}}</span>
+        <span class="commerce-name" style="font-weight: 500;">{{name}}</span>
       </a>
-      <form action="/client/favorites/{{_id}}/toggle" method="POST">
-        <button type="submit" class="fav-btn" title="{{#if isFavorite}}Quitar favorito{{else}}Agregar a favoritos{{/if}}">
-          {{#if isFavorite}}
-            <i class="bi bi-heart-fill" style="color:var(--coral);"></i>
-          {{else}}
-            <i class="bi bi-heart" style="color:#ccc;"></i>
-          {{/if}}
+      <form action="/cliente/favorito/agregar" method="POST">
+        <input type="hidden" name="commerceId" value="{{_id}}">
+        <button type="submit" class="fav-btn" style="background: none; border: none; cursor: pointer;" title="Agregar a favoritos">
+          <i class="bi bi-heart" style="font-size: 1.5rem; color: #ccc;"></i>
         </button>
       </form>
     </div>
   {{else}}
-    <div class="empty-state">
-      <i class="bi bi-shop-window"></i>
-      <p>No hay comercios de este tipo disponibles.</p>
+    <div class="empty-state text-center py-5">
+      <i class="bi bi-shop-window" style="font-size: 3rem;"></i>
+      <p class="mt-2">No hay comercios de este tipo disponibles.</p>
     </div>
   {{/each}}
 </div>

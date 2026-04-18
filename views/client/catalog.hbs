@@ -1,139 +1,66 @@
-<a href="javascript:history.back()" class="back-btn"><i class="bi bi-arrow-left"></i> Volver a comercios</a>
+<a href="javascript:history.back()" class="btn btn-secondary mb-3">Volver a comercios</a>
 
-<div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem;">
+<div class="d-flex align-items-center gap-3 mb-4">
   {{#if commerce.logo}}
-    <img src="{{commerce.logo}}" alt="{{commerce.name}}" style="width:48px;height:48px;border-radius:12px;object-fit:cover;" />
+    <img src="/uploads/{{commerce.logo}}" width="60" height="60" class="rounded-circle">
   {{/if}}
-  <div>
-    <h1 class="page-title mb-0">{{commerce.name}}</h1>
-    <span class="text-muted" style="font-size:0.82rem;">{{commerce.openTime}} - {{commerce.closeTime}}</span>
-  </div>
+  <h2>{{commerce.name}}</h2>
 </div>
 
-<div class="row g-4">
-  <div class="col-lg-8">
-    {{#each categories}}
-      {{#if products.length}}
-        <div class="catalog-section-title">{{name}}</div>
-        <div class="row g-3 mb-2">
-          {{#each products}}
-            <div class="col-md-6">
-              <div class="product-card" id="product-card-{{_id}}">
-                {{#if image}}
-                  <img src="{{image}}" alt="{{name}}" class="product-img" />
-                {{else}}
-                  <div class="product-img-placeholder"><i class="bi bi-image"></i></div>
-                {{/if}}
-                <div class="product-info">
-                  <div class="product-name">{{name}}</div>
-                  <div class="product-desc">{{description}}</div>
-                  <div class="product-price">RD$ {{price}}</div>
-                  <button
-                    class="btn btn-danger btn-sm mt-1 add-to-cart-btn"
-                    data-id="{{_id}}"
-                    data-name="{{name}}"
-                    data-price="{{price}}"
-                    data-image="{{image}}"
-                    id="btn-{{_id}}">
-                    <i class="bi bi-plus-circle me-1"></i>Agregar
-                  </button>
-                </div>
+{{#each categories}}
+  <div class="mb-4">
+    <h4 class="border-bottom pb-2">{{name}}</h4>
+    <div class="row">
+      {{#each products}}
+      <div class="col-md-6 mb-3">
+        <div class="card">
+          <div class="row g-0">
+            <div class="col-md-4">
+              {{#if image}}
+                <img src="/uploads/{{image}}" class="img-fluid rounded-start" style="height: 120px; object-fit: cover; width: 100%;">
+              {{else}}
+                <div class="bg-light text-center p-3" style="height: 120px;"><i class="fas fa-image fa-2x mt-3"></i></div>
+              {{/if}}
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">{{name}}</h5>
+                <p class="card-text">{{description}}</p>
+                <p class="card-text fw-bold">RD$ {{price}}</p>
+<form action="/cliente/carrito/agregar/{{../commerce._id}}" method="POST">
+  <input type="hidden" name="productId" value="{{_id}}">
+  <button type="submit" class="btn btn-primary btn-sm">Agregar al carrito</button>
+</form>
               </div>
             </div>
-          {{/each}}
-        </div>
-      {{/if}}
-    {{else}}
-      <div class="empty-state"><i class="bi bi-box-seam"></i><p>Este comercio no tiene productos.</p></div>
-    {{/each}}
-  </div>
-
-  <div class="col-lg-4">
-    <div class="cart-card">
-      <div class="card-body">
-        <div class="cart-title"><i class="bi bi-bag"></i> Mi Pedido</div>
-        <div id="cart-items">
-          <div class="cart-empty" id="empty-cart-msg">
-            <i class="bi bi-bag-x"></i>
-            Tu pedido está vacío
           </div>
         </div>
-        <div class="cart-subtotal" id="cart-subtotal-row" style="display:none;">
-          <span>Subtotal</span>
-          <span id="cart-subtotal" style="color:var(--orange);">RD$ 0.00</span>
-        </div>
-        <div class="d-grid mt-3">
-          <button id="continue-btn" class="btn btn-danger py-2" disabled>
-            <i class="bi bi-arrow-right-circle me-1"></i>Continuar
-          </button>
-        </div>
       </div>
+      {{/each}}
     </div>
   </div>
-</div>
+{{else}}
+  <div class="alert alert-warning">No hay productos disponibles.</div>
+{{/each}}
 
-<script>
-  const commerceId = '{{commerce._id}}';
-  let cart = [];
-
-  const updateCart = () => {
-    const itemsEl = document.getElementById('cart-items');
-    const emptyMsg = document.getElementById('empty-cart-msg');
-    const subtotalEl = document.getElementById('cart-subtotal');
-    const subtotalRow = document.getElementById('cart-subtotal-row');
-    const continueBtn = document.getElementById('continue-btn');
-
-    if (cart.length === 0) {
-      itemsEl.innerHTML = '<div class="cart-empty" id="empty-cart-msg"><i class="bi bi-bag-x"></i>Tu pedido está vacío</div>';
-      subtotalRow.style.display = 'none';
-      continueBtn.disabled = true;
-      return;
-    }
-
-    let subtotal = 0;
-    let html = '';
-    cart.forEach(item => {
-      subtotal += Number(item.price);
-      html += `<div class="cart-item">
-        <span class="cart-item-name">${item.name}</span>
-        <div style="display:flex;align-items:center;gap:0.4rem;flex-shrink:0;">
-          <span class="cart-item-price">RD$ ${Number(item.price).toFixed(2)}</span>
-          <button class="btn btn-sm btn-outline-danger py-0 px-1 remove-btn" data-id="${item._id}" style="border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;">
-            <i class="bi bi-x"></i>
-          </button>
+<div class="mt-4 p-3 border rounded bg-light">
+  <h4>Mi Pedido</h4>
+  <div id="cart-items">
+    {{#if session.cart.length}}
+      {{#each session.cart}}
+        <div class="d-flex justify-content-between border-bottom py-1">
+          <span>{{name}}</span>
+          <span>RD$ {{price}}</span>
+          <form action="/cliente/carrito/remover" method="POST">
+            <input type="hidden" name="productId" value="{{productId}}">
+            <button type="submit" class="btn btn-sm btn-danger">X</button>
+          </form>
         </div>
-      </div>`;
-    });
-
-    itemsEl.innerHTML = html;
-    subtotalEl.textContent = `RD$ ${subtotal.toFixed(2)}`;
-    subtotalRow.style.display = 'flex';
-    continueBtn.disabled = false;
-
-    document.querySelectorAll('.remove-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const id = btn.dataset.id;
-        cart = cart.filter(i => i._id !== id);
-        const addBtn = document.getElementById(`btn-${id}`);
-        if (addBtn) { addBtn.disabled = false; addBtn.innerHTML = '<i class="bi bi-plus-circle me-1"></i>Agregar'; }
-        updateCart();
-      });
-    });
-  };
-
-  document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.dataset.id;
-      if (cart.find(i => i._id === id)) return;
-      cart.push({ _id: id, name: btn.dataset.name, price: btn.dataset.price, image: btn.dataset.image });
-      btn.disabled = true;
-      btn.innerHTML = '<i class="bi bi-check-circle me-1"></i>Agregado';
-      updateCart();
-    });
-  });
-
-  document.getElementById('continue-btn').addEventListener('click', () => {
-    const cartJson = encodeURIComponent(JSON.stringify(cart));
-    window.location.href = `/client/checkout/${commerceId}?cart=${cartJson}`;
-  });
-</script>
+      {{/each}}
+      <div class="mt-2 fw-bold">Subtotal: RD$ {{subtotal}}</div>
+      <a href="/cliente/checkout" class="btn btn-success mt-2">Continuar</a>
+    {{else}}
+      <p>No hay productos seleccionados</p>
+    {{/if}}
+  </div>
+</div>

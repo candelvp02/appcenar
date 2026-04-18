@@ -7,11 +7,47 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- Menú según rol -->
+            <ul class="navbar-nav me-auto">
+                {{#if user}}
+                    {{#if (eq user.role "admin")}}
+                        <li class="nav-item"><a class="nav-link" href="/admin/dashboard"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/admin/clientes"><i class="fas fa-users"></i> Clientes</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/admin/deliveries"><i class="fas fa-motorcycle"></i> Deliveries</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/admin/comercios"><i class="fas fa-store"></i> Comercios</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/admin/administradores"><i class="fas fa-user-shield"></i> Admins</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/admin/tipos-comercio"><i class="fas fa-tags"></i> Tipos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/admin/configuracion"><i class="fas fa-cog"></i> Config</a></li>
+                    {{/if}}
+
+                    {{#if (eq user.role "commerce")}}
+                        <li class="nav-item"><a class="nav-link" href="/comercio/home"><i class="fas fa-home"></i> Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/comercio/categorias"><i class="fas fa-list"></i> Categorías</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/comercio/productos"><i class="fas fa-box"></i> Productos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/comercio/perfil"><i class="fas fa-store"></i> Perfil</a></li>
+                    {{/if}}
+
+                    {{#if (eq user.role "client")}}
+                        <li class="nav-item"><a class="nav-link" href="/cliente/home"><i class="fas fa-home"></i> Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/cliente/mis-pedidos"><i class="fas fa-shopping-bag"></i> Mis pedidos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/cliente/mis-direcciones"><i class="fas fa-map-marker-alt"></i> Direcciones</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/cliente/mis-favoritos"><i class="fas fa-heart"></i> Favoritos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/cliente/perfil"><i class="fas fa-user"></i> Perfil</a></li>
+                    {{/if}}
+
+                    {{#if (eq user.role "delivery")}}
+                        <li class="nav-item"><a class="nav-link" href="/delivery/home"><i class="fas fa-home"></i> Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/delivery/perfil"><i class="fas fa-user"></i> Perfil</a></li>
+                    {{/if}}
+                {{/if}}
+            </ul>
+
+            <!-- Usuario y logout -->
             <ul class="navbar-nav ms-auto">
                 {{#if user}}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-user"></i> {{user.username}}
+                            <i class="fas fa-user-circle"></i> {{user.username}}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a></li>

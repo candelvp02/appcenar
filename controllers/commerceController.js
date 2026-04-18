@@ -58,11 +58,15 @@ export const updateProfile = async (req, res) => {
 };
 
 export const getCategories = async (req, res) => {
-  const categories = await Category.find({ commerceId: req.session.user.commerceId });
-  for (let cat of categories) {
-    cat.productCount = await Product.countDocuments({ categoryId: cat._id });
+  try {
+    const commerceId = req.session.user.commerceId;
+    const categories = await Category.find({ commerceId }).lean();
+    console.log('Categorías enviadas a la vista:', categories); // ← debe mostrar los datos
+    res.render('commerce/categories', { categories });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error al cargar categorías');
   }
-  res.render('commerce/categories', { categories });
 };
 
 export const getCategoryForm = (req, res) => {
@@ -70,9 +74,25 @@ export const getCategoryForm = (req, res) => {
 };
 
 export const createCategory = async (req, res) => {
-  const { name, description } = req.body;
-  await Category.create({ commerceId: req.session.user.commerceId, name, description });
-  res.redirect('/comercio/categorias');
+  try {
+    const { name, description } = req.body;
+    const commerceId = req.session.user.commerceId;
+
+    if (!commerceId) {
+      return res.status(400).send('No se encontró el comercio asociado al usuario');
+    }
+
+    await Category.create({
+      commerceId: commerceId,
+      name,
+      description
+    });
+
+    res.redirect('/comercio/categorias');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error al crear la categoría');
+  }
 };
 
 export const getEditCategory = async (req, res) => {
@@ -106,13 +126,27 @@ export const deleteCategory = async (req, res) => {
 };
 
 export const getProducts = async (req, res) => {
-  const products = await Product.find({ commerceId: req.session.user.commerceId }).populate('categoryId');
-  res.render('commerce/products', { products });
+  try {
+    const commerceId = req.session.user.commerceId;
+    const products = await Product.find({ commerceId }).populate('categoryId').lean();
+    console.log('Productos encontrados:', products); // Para depurar
+    res.render('commerce/products', { products });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error al cargar productos');
+  }
 };
 
 export const getProductForm = async (req, res) => {
-  const categories = await Category.find({ commerceId: req.session.user.commerceId });
-  res.render('commerce/productForm', { product: null, categories });
+  try {
+    const commerceId = req.session.user.commerceId;
+    const categories = await Category.find({ commerceId }).lean();
+    console.log('Categorías enviadas al formulario:', categories); // <-- Para depurar
+    res.render('commerce/productForm', { product: null, categories });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error al cargar formulario');
+  }
 };
 
 export const createProduct = async (req, res) => {

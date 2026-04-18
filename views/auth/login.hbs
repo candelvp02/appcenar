@@ -16,10 +16,10 @@
     {{/each}}
 
     <form action="/login" method="POST">
-      <div class="mb-3">
-        <label class="form-label">Correo o Usuario</label>
-        <input type="text" name="identifier" class="form-control" placeholder="correo@ejemplo.com" required />
-      </div>
+<div class="mb-3">
+    <label for="usernameOrEmail" class="form-label">Usuario o correo electrónico</label>
+    <input type="text" class="form-control" id="usernameOrEmail" name="usernameOrEmail" value="{{usernameOrEmail}}" required>
+</div>
       <div class="mb-4">
         <label class="form-label">Contraseña</label>
         <input type="password" name="password" class="form-control" placeholder="••••••••" required />

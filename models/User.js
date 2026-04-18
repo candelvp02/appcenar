@@ -5,22 +5,22 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: { type: String, enum: ['admin', 'client', 'delivery', 'commerce'], required: true },
-  isActive: { type: Boolean, default: false },
+  role: { type: String, enum: ['admin', 'client', 'delivery', 'commerce'], required: true, default: 'client' },
+  isActive: { type: Boolean, default: true },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
   activationToken: String,
 
-  // common data
+  // Datos comunes
   firstName: String,
   lastName: String,
   phone: String,
   photo: String,
-
-  // delivery data
+  cedula: String, // Para admin
+  // Para delivery
   isAvailable: { type: Boolean, default: true },
 
-  // for commerce (rel 1:1 w commerce)
+  // Para commerce (rel 1:1 con Commerce)
   commerceId: { type: mongoose.Schema.Types.ObjectId, ref: 'Commerce' }
 }, { timestamps: true });
 

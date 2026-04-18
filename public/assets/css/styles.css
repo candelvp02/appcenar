@@ -998,3 +998,13 @@ body:has(.login-wrapper) {
 @media (max-width: 480px) {
   .type-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
+select.form-select, select.form-select option {
+  color: #000000 !important;
+  background-color: #ffffff !important;
+}
+
+form select, form select option {
+  color: #000000 !important;
+  background-color: #ffffff !important;
+}

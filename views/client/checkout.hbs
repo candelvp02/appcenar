@@ -1,76 +1,27 @@
-<a href="javascript:history.back()" class="back-btn"><i class="bi bi-arrow-left"></i> Volver al catálogo</a>
+<a href="javascript:history.back()" class="btn btn-secondary mb-3"><i class="fas fa-arrow-left"></i> Volver</a>
 
-<div class="page-header">
-  <h1 class="page-title"><i class="bi bi-bag-check"></i> Confirmar Pedido</h1>
-</div>
+<h2>Confirmar Pedido</h2>
 
-<div class="row g-4">
-  <div class="col-lg-7">
-    <div class="card">
-      <div class="card-body">
-        <div style="font-weight:700;font-size:1rem;margin-bottom:1rem;"><i class="bi bi-geo-alt" style="color:var(--orange);"></i> Selecciona una dirección</div>
-        {{#if addresses.length}}
-          <form action="/client/order" method="POST" id="order-form">
-            <input type="hidden" name="commerceId" value="{{commerce._id}}" />
-            <input type="hidden" name="cart" value="{{cartJson}}" />
-            {{#each addresses}}
-              <label class="address-option d-flex align-items-start gap-3" for="addr-{{_id}}">
-                <input class="form-check-input mt-1 flex-shrink-0" type="radio" name="addressId" value="{{_id}}" id="addr-{{_id}}" required />
-                <div>
-                  <div style="font-weight:700;font-size:0.9rem;">{{name}}</div>
-                  <div style="color:#6b7280;font-size:0.82rem;">{{description}}</div>
-                </div>
-              </label>
-            {{/each}}
-            <div class="d-grid mt-4">
-              <button type="submit" class="btn btn-danger py-2" id="order-btn" disabled>
-                <i class="bi bi-bag-check me-2"></i>Realizar Pedido
-              </button>
-            </div>
-          </form>
-        {{else}}
-          <div class="empty-state">
-            <i class="bi bi-geo-alt"></i>
-            <p>No tienes direcciones.<br>
-              <a href="/client/addresses/create" style="color:var(--orange);font-weight:600;">Crear dirección</a>
-            </p>
-          </div>
-        {{/if}}
+<form action="/cliente/pedido/crear" method="POST">
+  <div class="mb-3">
+    <label class="form-label fw-bold">Selecciona tu dirección</label>
+    {{#each addresses}}
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="addressId" value="{{_id}}" required>
+        <label class="form-check-label">{{name}} - {{description}}</label>
       </div>
-    </div>
+    {{/each}}
   </div>
+  <button type="submit" class="btn btn-success">Realizar pedido</button>
+</form>
 
-  <div class="col-lg-5">
-    <div class="checkout-summary">
-      <div class="checkout-summary-header">
-        {{#if commerce.logo}}
-          <img src="{{commerce.logo}}" style="width:44px;height:44px;border-radius:10px;object-fit:cover;" />
-        {{/if}}
-        <div style="font-weight:700;">{{commerce.name}}</div>
-      </div>
-      <div class="checkout-summary-body">
-        {{#each cart}}
-          <div class="summary-row">
-            <span>{{name}}</span>
-            <span style="color:var(--orange);font-weight:600;">RD$ {{price}}</span>
-          </div>
-        {{/each}}
-        <div class="summary-row mt-2" style="font-weight:600;">
-          <span>Subtotal</span><span>RD$ {{subtotal}}</span>
-        </div>
-        <div class="summary-row">
-          <span>ITBIS ({{itbisRate}}%)</span><span>RD$ {{itbisAmount}}</span>
-        </div>
-        <div class="summary-total">
-          <span>Total</span><span>RD$ {{total}}</span>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="mt-4 p-3 border rounded">
+  <h5>Resumen del pedido</h5>
+  {{#each cart}}
+    <div class="d-flex justify-content-between">{{name}} <span>RD$ {{price}}</span></div>
+  {{/each}}
+  <hr>
+  <div>Subtotal: RD$ {{subtotal}}</div>
+  <div>ITBIS ({{itbisPercent}}%): RD$ {{itbis}}</div>
+  <h5>Total: RD$ {{total}}</h5>
 </div>
-
-<script>
-  document.querySelectorAll('input[name="addressId"]').forEach(r => {
-    r.addEventListener('change', () => { document.getElementById('order-btn').disabled = false; });
-  });
-</script>

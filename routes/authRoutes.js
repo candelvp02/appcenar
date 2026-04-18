@@ -1,7 +1,6 @@
 import express from 'express';
 import { isGuest } from '../middlewares/authMiddleware.js';
 import { upload } from '../utils/multerConfig.js';
-import { registerValidation } from '../middlewares/validationMiddleware.js';
 import * as authController from '../controllers/authController.js';
 
 const router = express.Router();
@@ -9,7 +8,7 @@ const router = express.Router();
 router.get('/login', isGuest, authController.getLogin);
 router.post('/login', authController.postLogin);
 router.get('/register', isGuest, authController.getRegister);
-router.post('/register', upload.single('photo'), registerValidation, authController.postRegister);
+router.post('/register', upload.single('photo'), authController.postRegister);
 router.get('/register-commerce', isGuest, authController.getRegisterCommerce);
 router.post('/register-commerce', upload.single('logo'), authController.postRegisterCommerce);
 router.get('/activate/:token', authController.activateAccount);
