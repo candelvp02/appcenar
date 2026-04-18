@@ -67,6 +67,8 @@ app.use('/comercio', commerceRoutes);
 app.use('/delivery', deliveryRoutes);
 app.use('/admin', adminRoutes);
 
+app.use(express.static(path.join(__dirname, 'public')));
+
 // error404
 app.use((req, res) => {
   res.status(404).render('404');
