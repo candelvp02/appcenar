@@ -1,0 +1,23 @@
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">{{#if category}}Editar{{else}}Nueva{{/if}} Categoría</h4>
+            </div>
+            <div class="card-body">
+                <form action="/comercio/categoria/{{#if category}}editar/{{category._id}}{{else}}crear{{/if}}" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Nombre de la categoría</label>
+                        <input type="text" name="name" class="form-control" value="{{category.name}}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Descripción</label>
+                        <textarea name="description" class="form-control" rows="3" required>{{category.description}}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <a href="/comercio/categorias" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

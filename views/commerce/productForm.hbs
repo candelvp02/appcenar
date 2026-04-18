@@ -1,0 +1,43 @@
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">{{#if product}}Editar{{else}}Nuevo{{/if}} Producto</h4>
+            </div>
+            <div class="card-body">
+                <form action="/comercio/producto/{{#if product}}editar/{{product._id}}{{else}}crear{{/if}}" method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label class="form-label">Nombre del producto</label>
+                        <input type="text" name="name" class="form-control" value="{{product.name}}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Descripción</label>
+                        <textarea name="description" class="form-control" rows="3" required>{{product.description}}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Precio (RD$)</label>
+                        <input type="number" name="price" class="form-control" step="0.01" value="{{product.price}}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Categoría</label>
+                        <select name="categoryId" class="form-select" required>
+                            <option value="">Seleccionar categoría</option>
+                            {{#each categories}}
+                                <option value="{{this._id}}" {{#ifCond this._id '===' ../product.categoryId}}selected{{/ifCond}}>{{this.name}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Imagen del producto</label>
+                        {{#if product.image}}
+                            <div class="mb-2"><img src="/uploads/{{product.image}}" width="80" height="80"></div>
+                        {{/if}}
+                        <input type="file" name="image" class="form-control" accept="image/*" {{#unless product}}required{{/unless}}>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <a href="/comercio/productos" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

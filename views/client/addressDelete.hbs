@@ -1,0 +1,16 @@
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0"><i class="fas fa-exclamation-triangle"></i> Confirmar eliminación</h4>
+            </div>
+            <div class="card-body">
+                <p>¿Está seguro que desea eliminar la dirección <strong>{{address.name}}</strong>?</p>
+                <form action="/cliente/direccion/eliminar/{{address._id}}" method="POST">
+                    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+                    <a href="/cliente/mis-direcciones" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

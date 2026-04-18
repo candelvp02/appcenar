@@ -1,0 +1,25 @@
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">{{#if address}}Editar{{else}}Nueva{{/if}} Dirección</h4>
+            </div>
+            <div class="card-body">
+                <form action="/cliente/direccion/{{#if address}}editar/{{address._id}}{{else}}crear{{/if}}" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Nombre de la dirección</label>
+                        <input type="text" name="name" class="form-control" value="{{address.name}}" required>
+                        <small class="text-muted">Ej: Casa, Trabajo, etc.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Descripción completa</label>
+                        <textarea name="description" class="form-control" rows="3" required>{{address.description}}</textarea>
+                        <small class="text-muted">Calle, número, sector, referencias</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <a href="/cliente/mis-direcciones" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

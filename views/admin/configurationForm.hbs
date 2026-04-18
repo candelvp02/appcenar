@@ -1,0 +1,19 @@
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-warning">
+                <h4 class="mb-0"><i class="fas fa-edit"></i> Editar ITBIS</h4>
+            </div>
+            <div class="card-body">
+                <form action="/admin/configuracion/editar" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Porcentaje de ITBIS</label>
+                        <input type="number" name="itbis" class="form-control" value="{{config.itbis}}" step="0.01" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <a href="/admin/configuracion" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

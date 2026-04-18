@@ -1,0 +1,51 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title"><i class="bi bi-speedometer2"></i> Dashboard</h1>
+    <p class="page-subtitle">Resumen general del sistema AppCenar</p>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-6 col-lg-3">
+    <div class="stat-card stat-card-orange">
+      <i class="bi bi-bag-check stat-icon"></i>
+      <div class="stat-value">{{totalOrders}}</div>
+      <div class="stat-label">Pedidos Totales</div>
+      <span class="stat-badge"><i class="bi bi-calendar-day"></i> {{todayOrders}} hoy</span>
+    </div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="stat-card stat-card-teal">
+      <i class="bi bi-shop stat-icon"></i>
+      <div class="stat-value">{{activeCommerces}}</div>
+      <div class="stat-label">Comercios Activos</div>
+      <span class="stat-badge">{{inactiveCommerces}} inactivos</span>
+    </div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="stat-card stat-card-green">
+      <i class="bi bi-people stat-icon"></i>
+      <div class="stat-value">{{activeClients}}</div>
+      <div class="stat-label">Clientes Activos</div>
+      <span class="stat-badge">{{inactiveClients}} inactivos</span>
+    </div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="stat-card stat-card-coral">
+      <i class="bi bi-bicycle stat-icon"></i>
+      <div class="stat-value">{{activeDeliveries}}</div>
+      <div class="stat-label">Deliveries Activos</div>
+      <span class="stat-badge">{{inactiveDeliveries}} inactivos</span>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-6 col-lg-3">
+    <div class="stat-card stat-card-dark">
+      <i class="bi bi-box-seam stat-icon"></i>
+      <div class="stat-value">{{totalProducts}}</div>
+      <div class="stat-label">Productos Creados</div>
+    </div>
+  </div>
+</div>

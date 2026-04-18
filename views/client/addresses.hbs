@@ -1,0 +1,22 @@
+<div class="container">
+    <h2 class="mb-4">Mis Direcciones</h2>
+    
+    <a href="/cliente/direccion/crear" class="btn btn-primary mb-3"><i class="fas fa-plus"></i> Nueva dirección</a>
+    
+    <div class="row">
+        {{#each addresses}}
+        <div class="col-md-6 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{this.name}}</h5>
+                    <p class="card-text">{{this.description}}</p>
+                    <a href="/cliente/direccion/editar/{{this._id}}" class="btn btn-info btn-sm">Editar</a>
+                    <a href="/cliente/direccion/eliminar/{{this._id}}" class="btn btn-danger btn-sm">Eliminar</a>
+                </div>
+            </div>
+        </div>
+        {{else}}
+        <div class="alert alert-info">No tienes direcciones registradas</div>
+        {{/each}}
+    </div>
+</div>

@@ -1,0 +1,49 @@
+<div class="card shadow">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0"><i class="fas fa-store"></i> Listado de Comercios</h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr><th>Logo</th><th>Nombre</th><th>Tipo</th><th>Teléfono</th><th>Email</th><th>Horario</th><th>Pedidos</th><th>Estado</th><th>Acciones</th></tr>
+                </thead>
+                <tbody>
+                    {{#each commerces}}
+                    <tr>
+                        <td>
+                            {{#if this.logo}}
+                                <img src="/uploads/{{this.logo}}" width="50" height="50" class="rounded-circle">
+                            {{else}}
+                                <i class="fas fa-store fa-2x"></i>
+                            {{/if}}
+                        </td>
+                        <td>{{this.name}}</td>
+                        <td>{{this.commerceTypeId.name}}</td>
+                        <td>{{this.phone}}</td>
+                        <td>{{this.email}}</td>
+                        <td>{{this.openingTime}} - {{this.closingTime}}</td>
+                        <td>{{this.orderCount}}</td>
+                        <td>
+                            {{#if this.isActive}}
+                                <span class="badge bg-success">Activo</span>
+                            {{else}}
+                                <span class="badge bg-danger">Inactivo</span>
+                            {{/if}}
+                        </td>
+                        <td>
+                            <form action="/admin/comercio/{{this._id}}/toggle" method="POST" style="display:inline;">
+                                {{#if this.isActive}}
+                                    <button type="submit" class="btn btn-warning btn-sm" onclick="return confirm('¿Desactivar este comercio?')">Inactivar</button>
+                                {{else}}
+                                    <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('¿Activar este comercio?')">Activar</button>
+                                {{/if}}
+                            </form>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

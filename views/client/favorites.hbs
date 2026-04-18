@@ -1,0 +1,29 @@
+<div class="container">
+    <h2 class="mb-4">Mis Comercios Favoritos</h2>
+    
+    <div class="row">
+        {{#each favorites}}
+        <div class="col-md-4 mb-4">
+            <div class="card commerce-card" onclick="window.location.href='/cliente/catalogo/{{this.commerceId._id}}'">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            {{#if this.commerceId.logo}}
+                                <img src="/uploads/{{this.commerceId.logo}}" width="60" height="60" class="rounded-circle me-3">
+                            {{else}}
+                                <i class="fas fa-store fa-3x me-3"></i>
+                            {{/if}}
+                            <h5 class="card-title">{{this.commerceId.name}}</h5>
+                        </div>
+                        <form action="/cliente/favorito/remover/{{this.commerceId._id}}" method="POST" onclick="event.stopPropagation()">
+                            <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-heart-broken"></i> Remover</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{else}}
+        <div class="alert alert-info">No tienes comercios favoritos</div>
+        {{/each}}
+    </div>
+</div>

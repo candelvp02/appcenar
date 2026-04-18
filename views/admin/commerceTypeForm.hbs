@@ -1,0 +1,30 @@
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">{{#if type}}Editar{{else}}Crear{{/if}} Tipo de Comercio</h4>
+            </div>
+            <div class="card-body">
+                <form action="/admin/tipo-comercio/{{#if type}}editar/{{type._id}}{{else}}crear{{/if}}" method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" name="name" class="form-control" value="{{type.name}}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Descripción</label>
+                        <textarea name="description" class="form-control" rows="3" required>{{type.description}}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Icono</label>
+                        {{#if type.icon}}
+                            <div class="mb-2"><img src="/uploads/{{type.icon}}" width="60" height="60"></div>
+                        {{/if}}
+                        <input type="file" name="icon" class="form-control" accept="image/*" {{#unless type}}required{{/unless}}>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <a href="/admin/tipos-comercio" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

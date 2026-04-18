@@ -1,0 +1,17 @@
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0"><i class="fas fa-exclamation-triangle"></i> Confirmar eliminación</h4>
+            </div>
+            <div class="card-body">
+                <p>¿Está seguro que desea eliminar el tipo de comercio <strong>{{type.name}}</strong>?</p>
+                <p class="text-danger">⚠️ Advertencia: Se eliminarán <strong>{{commerceCount}}</strong> comercios asociados a este tipo.</p>
+                <form action="/admin/tipo-comercio/eliminar/{{type._id}}" method="POST">
+                    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+                    <a href="/admin/tipos-comercio" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

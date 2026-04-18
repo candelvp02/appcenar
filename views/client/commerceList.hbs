@@ -1,0 +1,43 @@
+<a href="/client/home" class="back-btn"><i class="bi bi-arrow-left"></i> Volver</a>
+
+<div class="page-header">
+  <h1 class="page-title"><i class="bi bi-shop"></i> {{commerceType.name}}</h1>
+</div>
+
+<form action="/client/commerces/{{commerceType._id}}" method="GET" class="search-bar mb-3">
+  <input type="text" name="search" class="form-control" placeholder="Buscar comercio por nombre..." value="{{search}}" />
+  <button type="submit" class="btn btn-danger"><i class="bi bi-search"></i></button>
+</form>
+
+<div class="count-badge">
+  <i class="bi bi-shop me-1"></i> {{count}} comercios de tipo {{commerceType.name}}
+</div>
+
+<div class="commerce-list">
+  {{#each commerces}}
+    <div class="commerce-item" style="text-decoration:none;">
+      <a href="/client/commerces/{{../commerceType._id}}/catalog/{{_id}}" style="display:flex;align-items:center;gap:1rem;flex:1;text-decoration:none;color:inherit;">
+        {{#if logo}}
+          <img src="{{logo}}" alt="{{name}}" class="commerce-logo" />
+        {{else}}
+          <div class="commerce-logo-placeholder"><i class="bi bi-shop"></i></div>
+        {{/if}}
+        <span class="commerce-name">{{name}}</span>
+      </a>
+      <form action="/client/favorites/{{_id}}/toggle" method="POST">
+        <button type="submit" class="fav-btn" title="{{#if isFavorite}}Quitar favorito{{else}}Agregar a favoritos{{/if}}">
+          {{#if isFavorite}}
+            <i class="bi bi-heart-fill" style="color:var(--coral);"></i>
+          {{else}}
+            <i class="bi bi-heart" style="color:#ccc;"></i>
+          {{/if}}
+        </button>
+      </form>
+    </div>
+  {{else}}
+    <div class="empty-state">
+      <i class="bi bi-shop-window"></i>
+      <p>No hay comercios de este tipo disponibles.</p>
+    </div>
+  {{/each}}
+</div>

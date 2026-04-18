@@ -1,0 +1,50 @@
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="fas fa-store"></i> Perfil del Comercio</h4>
+            </div>
+            <div class="card-body">
+                <form action="/comercio/perfil" method="POST" enctype="multipart/form-data">
+                    <div class="text-center mb-3">
+                        {{#if commerce.logo}}
+                            <img src="/uploads/{{commerce.logo}}" width="100" height="100" class="rounded-circle">
+                        {{else}}
+                            <i class="fas fa-store fa-5x text-secondary"></i>
+                        {{/if}}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Nombre del comercio</label>
+                        <input type="text" name="name" class="form-control" value="{{commerce.name}}" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Teléfono</label>
+                            <input type="tel" name="phone" class="form-control" value="{{commerce.phone}}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Correo electrónico</label>
+                            <input type="email" name="email" class="form-control" value="{{commerce.email}}" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Hora de apertura</label>
+                            <input type="time" name="openingTime" class="form-control" value="{{commerce.openingTime}}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Hora de cierre</label>
+                            <input type="time" name="closingTime" class="form-control" value="{{commerce.closingTime}}" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Logo del comercio</label>
+                        <input type="file" name="logo" class="form-control" accept="image/*">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    <a href="/comercio/home" class="btn btn-secondary">Volver</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

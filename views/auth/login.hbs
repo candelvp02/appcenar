@@ -1,0 +1,52 @@
+<div class="login-wrapper">
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="brand-icon">
+        <i class="bi bi-bag-heart-fill"></i>
+      </div>
+      <h2>App<span>Cenar</span></h2>
+      <p>Inicia sesión para continuar</p>
+    </div>
+
+    {{#each success}}
+      <div class="alert alert-success mb-3"><i class="bi bi-check-circle me-2"></i>{{this}}</div>
+    {{/each}}
+    {{#each error}}
+      <div class="alert alert-danger mb-3"><i class="bi bi-exclamation-circle me-2"></i>{{this}}</div>
+    {{/each}}
+
+    <form action="/login" method="POST">
+      <div class="mb-3">
+        <label class="form-label">Correo o Usuario</label>
+        <input type="text" name="identifier" class="form-control" placeholder="correo@ejemplo.com" required />
+      </div>
+      <div class="mb-4">
+        <label class="form-label">Contraseña</label>
+        <input type="password" name="password" class="form-control" placeholder="••••••••" required />
+      </div>
+      <div class="d-grid mb-3">
+        <button type="submit" class="btn btn-danger py-2">
+          <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
+        </button>
+      </div>
+    </form>
+
+    <div class="login-divider">o regístrate</div>
+
+    <div class="d-flex flex-column gap-2">
+      <a href="/register" class="btn-register-link">
+        <i class="bi bi-person-plus" style="color:var(--teal);"></i>
+        Registrarse como Cliente o Delivery
+      </a>
+      <a href="/register-commerce" class="btn-register-link">
+        <i class="bi bi-shop" style="color:var(--orange);"></i>
+        Registrarse como Comercio
+      </a>
+      <div class="text-center mt-2">
+        <a href="/forgot-password" class="btn-forgot">
+          <i class="bi bi-key"></i> ¿Olvidaste tu contraseña?
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

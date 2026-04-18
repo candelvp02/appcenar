@@ -1,0 +1,36 @@
+<div class="container">
+    <h2 class="mb-4">Mis Productos</h2>
+    
+    <a href="/comercio/producto/crear" class="btn btn-primary mb-3"><i class="fas fa-plus"></i> Nuevo producto</a>
+    
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr><th>Imagen</th><th>Nombre</th><th>Descripción</th><th>Categoría</th><th>Precio</th><th>Acciones</th></tr>
+            </thead>
+            <tbody>
+                {{#each products}}
+                <tr>
+                    <td>
+                        {{#if this.image}}
+                            <img src="/uploads/{{this.image}}" width="50" height="50" class="rounded">
+                        {{else}}
+                            <i class="fas fa-image fa-2x"></i>
+                        {{/if}}
+                    </td>
+                    <td>{{this.name}}</td>
+                    <td>{{this.description}}</td>
+                    <td>{{this.categoryId.name}}</td>
+                    <td>RD$ {{this.price}}</td>
+                    <td>
+                        <a href="/comercio/producto/editar/{{this._id}}" class="btn btn-info btn-sm">Editar</a>
+                        <a href="/comercio/producto/eliminar/{{this._id}}" class="btn btn-danger btn-sm">Eliminar</a>
+                    </td>
+                </tr>
+                {{else}}
+                <tr><td colspan="6" class="text-center">No hay productos creados</td></tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>

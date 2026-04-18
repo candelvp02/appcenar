@@ -1,0 +1,35 @@
+<div class="container">
+    <h2 class="mb-4">Mis Pedidos Asignados</h2>
+    
+    {{#each orders}}
+    <div class="card mb-3" onclick="window.location.href='/delivery/pedido/{{this._id}}'" style="cursor:pointer;">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-md-2">
+                    {{#if this.commerceId.logo}}
+                        <img src="/uploads/{{this.commerceId.logo}}" width="60" height="60" class="rounded-circle">
+                    {{else}}
+                        <i class="fas fa-store fa-3x"></i>
+                    {{/if}}
+                </div>
+                <div class="col-md-3">
+                    <h5>{{this.commerceId.name}}</h5>
+                    <span class="badge status-{{this.status}}">{{statusLabel this.status}}</span>
+                </div>
+                <div class="col-md-3">
+                    <p class="mb-0 fw-bold">Total: RD$ {{this.total}}</p>
+                    <small class="text-muted">{{this.items.length}} producto(s)</small>
+                </div>
+                <div class="col-md-3">
+                    <small class="text-muted">{{formatDate this.createdAt}}</small>
+                </div>
+                <div class="col-md-1">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{else}}
+    <div class="alert alert-info">No tienes pedidos asignados</div>
+    {{/each}}
+</div>
