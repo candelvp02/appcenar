@@ -12,12 +12,14 @@
                     {{#each commerces}}
                     <tr>
                         <td>
-                            {{#if this.logo}}
-                                <img src="/uploads/{{this.logo}}" width="50" height="50" class="rounded-circle">
-                            {{else}}
-                                <i class="fas fa-store fa-2x"></i>
-                            {{/if}}
-                        </td>
+    {{#if logo}}
+        <img src="/uploads/{{logo}}" style="width: 50px; height: 50px; object-fit: cover;" class="rounded-circle shadow-sm">
+    {{else}}
+        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 50px; height: 50px;">
+            <i class="fas fa-store text-secondary"></i>
+        </div>
+    {{/if}}
+</td>
                         <td>{{this.name}}</td>
                         <td>{{this.commerceTypeId.name}}</td>
                         <td>{{this.phone}}</td>

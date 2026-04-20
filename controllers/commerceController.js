@@ -4,11 +4,15 @@ import Commerce from '../models/Commerce.js';
 import Category from '../models/Category.js';
 import Product from '../models/Product.js';
 import { upload } from '../utils/multerConfig.js';
+import Address from '../models/Address.js';
 
 export const getHome = async (req, res) => {
   const orders = await Order.find({ commerceId: req.session.user.commerceId })
     .populate('clientId')
-    .sort('-createdAt');
+    .populate('commerceId') 
+    .sort('-createdAt')
+    .lean(); 
+    
   res.render('commerce/home', { orders });
 };
 
@@ -16,11 +20,18 @@ export const getOrderDetail = async (req, res) => {
   const order = await Order.findById(req.params.id)
     .populate('commerceId')
     .populate('addressId')
-    .populate('items.productId');
+    .populate('items.productId')
+    .lean();
+
   if (order.commerceId._id.toString() !== req.session.user.commerceId.toString()) {
     return res.redirect('/comercio/home');
   }
-  const deliveries = await User.find({ role: 'delivery', isActive: true, isAvailable: true });
+  
+  const deliveries = await User.find({ 
+    role: 'delivery', 
+    isActive: true, 
+    isAvailable: true 
+  }).lean();
   res.render('commerce/orderDetail', { order, deliveries });
 };
 
@@ -45,7 +56,7 @@ export const assignDelivery = async (req, res) => {
 };
 
 export const getProfile = async (req, res) => {
-  const commerce = await Commerce.findById(req.session.user.commerceId);
+  const commerce = await Commerce.findById(req.session.user.commerceId).lean();
   res.render('commerce/profile', { commerce });
 };
 
@@ -61,7 +72,12 @@ export const getCategories = async (req, res) => {
   try {
     const commerceId = req.session.user.commerceId;
     const categories = await Category.find({ commerceId }).lean();
-    console.log('Categorías enviadas a la vista:', categories); // ← debe mostrar los datos
+
+    for (let category of categories) {
+      category.productCount = await Product.countDocuments({ categoryId: category._id });
+    }
+
+    console.log('Categorías enviadas a la vista:', categories);
     res.render('commerce/categories', { categories });
   } catch (error) {
     console.error(error);
@@ -96,7 +112,7 @@ export const createCategory = async (req, res) => {
 };
 
 export const getEditCategory = async (req, res) => {
-  const category = await Category.findOne({ _id: req.params.id, commerceId: req.session.user.commerceId });
+  const category = await Category.findOne({ _id: req.params.id, commerceId: req.session.user.commerceId }).lean();
   if (!category) return res.redirect('/comercio/categorias');
   res.render('commerce/categoryForm', { category });
 };
@@ -163,7 +179,7 @@ export const createProduct = async (req, res) => {
 };
 
 export const getEditProduct = async (req, res) => {
-  const product = await Product.findOne({ _id: req.params.id, commerceId: req.session.user.commerceId });
+  const product = await Product.findOne({ _id: req.params.id, commerceId: req.session.user.commerceId }).lean();
   if (!product) return res.redirect('/comercio/productos');
   const categories = await Category.find({ commerceId: req.session.user.commerceId });
   res.render('commerce/productForm', { product, categories });

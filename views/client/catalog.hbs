@@ -27,10 +27,15 @@
                 <h5 class="card-title">{{name}}</h5>
                 <p class="card-text">{{description}}</p>
                 <p class="card-text fw-bold">RD$ {{price}}</p>
-<form action="/cliente/carrito/agregar/{{../commerce._id}}" method="POST">
-  <input type="hidden" name="productId" value="{{_id}}">
-  <button type="submit" class="btn btn-primary btn-sm">Agregar al carrito</button>
-</form>
+{{#if inCart}}
+  <button type="button" class="btn btn-secondary btn-sm" disabled><i class="bi bi-check"></i> Agregado</button>
+{{else}}
+  <form action="/cliente/carrito/agregar/{{@root.commerce._id}}" method="POST">
+    <input type="hidden" name="productId" value="{{_id}}">
+    <input type="hidden" name="commerceId" value="{{@root.commerce._id}}">
+    <button type="submit" class="btn btn-primary btn-sm">Agregar al carrito</button>
+  </form>
+{{/if}}
               </div>
             </div>
           </div>
@@ -46,21 +51,20 @@
 <div class="mt-4 p-3 border rounded bg-light">
   <h4>Mi Pedido</h4>
   <div id="cart-items">
-    {{#if session.cart.length}}
-      {{#each session.cart}}
-        <div class="d-flex justify-content-between border-bottom py-1">
-          <span>{{name}}</span>
-          <span>RD$ {{price}}</span>
-          <form action="/cliente/carrito/remover" method="POST">
-            <input type="hidden" name="productId" value="{{productId}}">
-            <button type="submit" class="btn btn-sm btn-danger">X</button>
-          </form>
-        </div>
-      {{/each}}
-      <div class="mt-2 fw-bold">Subtotal: RD$ {{subtotal}}</div>
-      <a href="/cliente/checkout" class="btn btn-success mt-2">Continuar</a>
-    {{else}}
-      <p>No hay productos seleccionados</p>
-    {{/if}}
-  </div>
+  {{#if cart.length}}
+    {{#each cart}}
+      <div class="d-flex justify-content-between border-bottom py-1">
+        <span>{{name}}</span>
+        <span>RD$ {{price}}</span>
+        <form action="/cliente/carrito/remover" method="POST">
+          <input type="hidden" name="productId" value="{{productId}}">
+          <button type="submit" class="btn btn-sm btn-danger">X</button>
+        </form>
+      </div>
+    {{/each}}
+    <a href="/cliente/checkout" class="btn btn-success mt-2 w-100">Continuar a Checkout</a>
+  {{else}}
+    <p class="text-muted">No hay productos seleccionados</p>
+  {{/if}}
+</div>
 </div>

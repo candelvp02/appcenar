@@ -1,31 +1,35 @@
-<a href="/client/orders" class="back-btn"><i class="bi bi-arrow-left"></i> Volver a Mis Pedidos</a>
+<a href="/cliente/mis-pedidos" class="back-btn"><i class="bi bi-arrow-left"></i> Volver a Mis Pedidos</a>
 
 <div style="max-width:600px;margin:0 auto;">
   <div class="order-detail-header">
-    {{#if order.commerce.logo}}
-      <img src="{{order.commerce.logo}}" class="order-detail-logo" />
+    {{#if order.commerceId.logo}}
+      <img src="/uploads/{{order.commerceId.logo}}" class="order-detail-logo" />
     {{/if}}
-    <div class="order-detail-name">{{order.commerce.name}}</div>
+    <div class="order-detail-name">{{order.commerceId.name}}</div>
     <span class="badge bg-{{statusClass order.status}} mt-2" style="font-size:0.85rem;">{{statusLabel order.status}}</span>
-    <div class="order-detail-date">{{formatDate order.orderedAt}}</div>
+    <div class="order-detail-date">{{formatDate order.createdAt}}</div>
   </div>
 
   <div class="card mb-3">
     <div class="card-body">
       <div style="font-weight:700;margin-bottom:1rem;">Tu Pedido</div>
+      
       <div class="order-items-list">
-        {{#each order.items}}
-          <div class="order-product-item">
-            {{#if image}}
-              <img src="{{image}}" class="order-product-img" />
-            {{else}}
-              <div class="order-product-img-placeholder"><i class="bi bi-image"></i></div>
-            {{/if}}
-            <span class="order-product-name">{{name}}</span>
-            <span class="order-product-price">RD$ {{price}}</span>
-          </div>
-        {{/each}}
-      </div>
+  {{#each order.items}}
+    <div class="order-product-item">
+      
+      {{#if productImage}}
+        <img src="/uploads/{{productImage}}" class="order-product-img" />
+      {{else}}
+        <div class="order-product-img-placeholder"><i class="bi bi-image"></i></div>
+      {{/if}}
+
+      <span class="order-product-name">{{productName}}</span>
+      <span class="order-product-price">RD$ {{productPrice}}</span>
+      
+    </div>
+  {{/each}}
+</div>
       <div class="order-total-row mt-3">
         <span>Total</span>
         <span>RD$ {{order.total}}</span>

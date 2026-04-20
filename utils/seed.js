@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
 import User from '../models/User.js';
 import Configuration from '../models/Configuration.js';
 import CommerceType from '../models/CommerceType.js';
@@ -15,7 +16,7 @@ const seed = async () => {
     await User.create({
       username: 'admin',
       email: 'admin@appcenar.com',
-      password: 'admin123',
+      password: 'admin1234',
       role: 'admin',
       isActive: true,
       firstName: 'Admin',

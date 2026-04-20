@@ -2,42 +2,53 @@
     <div class="col-md-8">
         <div class="card shadow">
             <div class="card-header bg-primary text-white">
-                <h4 class="mb-0">{{#if admin}}Editar{{else}}Crear{{/if}} Administrador</h4>
+                <h4 class="mb-0">{{#if admin._id}}Editar{{else}}Crear{{/if}} Administrador</h4>
             </div>
             <div class="card-body">
-                <form action="/admin/administrador/{{#if admin}}editar/{{admin._id}}{{else}}crear{{/if}}" method="POST">
+                <form action="/admin/administrador/{{#if admin._id}}editar/{{admin._id}}{{else}}crear{{/if}}" method="POST">
+     
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Nombre</label>
+                            <label class="form-label fw-bold">Nombre</label>
                             <input type="text" name="firstName" class="form-control" value="{{admin.firstName}}" required>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Apellido</label>
+                            <label class="form-label fw-bold">Apellido</label>
                             <input type="text" name="lastName" class="form-control" value="{{admin.lastName}}" required>
                         </div>
                     </div>
+
                     <div class="mb-3">
-                        <label class="form-label">Cédula</label>
+                        <label class="form-label fw-bold">Cédula</label>
                         <input type="text" name="cedula" class="form-control" value="{{admin.cedula}}" required>
                     </div>
+
                     <div class="mb-3">
-                        <label class="form-label">Email</label>
+                        <label class="form-label fw-bold">Email</label>
                         <input type="email" name="email" class="form-control" value="{{admin.email}}" required>
                     </div>
+
                     <div class="mb-3">
-                        <label class="form-label">Usuario</label>
+                        <label class="form-label fw-bold">Usuario</label>
                         <input type="text" name="username" class="form-control" value="{{admin.username}}" required>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">{{#if admin}}Nueva contraseña (dejar vacío para no cambiar){{else}}Contraseña{{/if}}</label>
-                        <input type="password" name="password" class="form-control" {{#unless admin}}required{{/unless}}>
+
+                    <div class="mb-3 border-top pt-3">
+                        <label class="form-label fw-bold">
+                            {{#if admin._id}}Nueva contraseña (dejar vacío para no cambiar){{else}}Contraseña{{/if}}
+                        </label>
+                        <input type="password" name="password" class="form-control" {{#unless admin._id}}required{{/unless}}>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Confirmar contraseña</label>
-                        <input type="password" name="confirmPassword" class="form-control" {{#unless admin}}required{{/unless}}>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Confirmar contraseña</label>
+                        <input type="password" name="confirmPassword" class="form-control" {{#unless admin._id}}required{{/unless}}>
                     </div>
-                    <button type="submit" class="btn btn-primary">Guardar</button>
-                    <a href="/admin/administradores" class="btn btn-secondary">Cancelar</a>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary px-4">Guardar</button>
+                        <a href="/admin/administradores" class="btn btn-secondary">Cancelar</a>
+                    </div>
                 </form>
             </div>
         </div>

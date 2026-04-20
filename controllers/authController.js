@@ -104,7 +104,7 @@ export const postRegister = async (req, res) => {
 
 export const getRegisterCommerce = async (req, res) => {
   try {
-    const commerceTypes = await CommerceType.find();
+    const commerceTypes = await CommerceType.find().lean();
     console.log('Tipos de comercio encontrados:', commerceTypes.length); // Para depurar
     res.render('auth/registerCommerce', { commerceTypes });
   } catch (error) {

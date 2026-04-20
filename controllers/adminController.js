@@ -39,7 +39,7 @@ export const getDashboard = async (req, res) => {
 };
 
 export const getClients = async (req, res) => {
-  const clients = await User.find({ role: 'client' });
+  const clients = await User.find({ role: 'client' }).lean();
   for (let client of clients) {
     client.orderCount = await Order.countDocuments({ clientId: client._id });
   }
@@ -56,7 +56,7 @@ export const toggleClientStatus = async (req, res) => {
 };
 
 export const getDeliveries = async (req, res) => {
-  const deliveries = await User.find({ role: 'delivery' });
+  const deliveries = await User.find({ role: 'delivery' }).lean();
   for (let delivery of deliveries) {
     delivery.orderCount = await Order.countDocuments({ deliveryId: delivery._id, status: 'completed' });
   }
@@ -73,7 +73,7 @@ export const toggleDeliveryStatus = async (req, res) => {
 };
 
 export const getCommerces = async (req, res) => {
-  const commerces = await Commerce.find().populate('commerceTypeId');
+  const commerces = await Commerce.find().populate('commerceTypeId').lean();
   for (let commerce of commerces) {
     commerce.orderCount = await Order.countDocuments({ commerceId: commerce._id });
   }
@@ -91,7 +91,12 @@ export const toggleCommerceStatus = async (req, res) => {
 };
 
 export const getAdmins = async (req, res) => {
-  const admins = await User.find({ role: 'admin' });
+  const rawAdmins = await User.find({ role: 'admin' }).lean();
+  const admins = rawAdmins.map(admin => ({
+    ...admin,
+    stringId: admin._id.toString(), 
+    _id: admin._id.toString()
+  }));
   res.render('admin/admins', { admins, currentUserId: req.session.user.id });
 };
 
@@ -122,8 +127,11 @@ export const getEditAdmin = async (req, res) => {
   if (req.params.id === req.session.user.id) {
     return res.redirect('/admin/administradores?error=No puedes editar tu propio usuario');
   }
-  const admin = await User.findById(req.params.id);
+  const admin = await User.findById(req.params.id).lean(); // [cite: 146]
   if (!admin || admin.role !== 'admin') return res.redirect('/admin/administradores');
+
+  admin._id = admin._id.toString();
+  
   res.render('admin/adminForm', { admin });
 };
 
@@ -148,12 +156,12 @@ export const toggleAdminStatus = async (req, res) => {
 };
 
 export const getConfiguration = async (req, res) => {
-  const config = await Configuration.findOne();
+  const config = await Configuration.findOne().lean();
   res.render('admin/configuration', { config });
 };
 
 export const getConfigurationForm = async (req, res) => {
-  const config = await Configuration.findOne();
+  const config = await Configuration.findOne().lean();
   res.render('admin/configurationForm', { config });
 };
 
@@ -164,7 +172,7 @@ export const updateConfiguration = async (req, res) => {
 };
 
 export const getCommerceTypes = async (req, res) => {
-  const types = await CommerceType.find();
+  const types = await CommerceType.find().lean();
   for (let type of types) {
     type.commerceCount = await Commerce.countDocuments({ commerceTypeId: type._id });
   }
@@ -186,7 +194,7 @@ export const createCommerceType = async (req, res) => {
 };
 
 export const getEditCommerceType = async (req, res) => {
-  const type = await CommerceType.findById(req.params.id);
+  const type = await CommerceType.findById(req.params.id).lean();
   if (!type) return res.redirect('/admin/tipos-comercio');
   res.render('admin/commerceTypeForm', { type });
 };

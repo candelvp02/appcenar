@@ -14,33 +14,68 @@ export const getHome = async (req, res) => {
 };
 
 export const getCommercesByType = async (req, res) => {
-  const { typeId } = req.params;
-  const commerceType = await CommerceType.findById(typeId).lean();
-  const commerces = await Commerce.find({ commerceTypeId: typeId, isActive: true }).lean();
-  res.render('client/commerceList', { commerceType, commerces, count: commerces.length });
+  try {
+    const { typeId } = req.params;
+    const { search } = req.query;
+
+    const commerceType = await CommerceType.findById(typeId).lean();
+    let filter = { commerceTypeId: typeId, isActive: true };
+
+    if (search) {
+      filter.name = { $regex: search, $options: 'i' }; 
+    }
+
+    const commerces = await Commerce.find(filter).lean();
+
+    res.render('client/commerceList', { 
+      commerceType, 
+      commerces, 
+      count: commerces.length,
+      search
+    });
+  } catch (error) {
+    console.error('Error al cargar los comercios:', error);
+    res.redirect('/cliente/home');
+  }
 };
 
 export const getCatalog = async (req, res) => {
   const { commerceId } = req.params;
   const commerce = await Commerce.findById(commerceId).lean();
   const categories = await Category.find({ commerceId }).lean();
+  
   for (let cat of categories) {
     cat.products = await Product.find({ categoryId: cat._id, isActive: true }).lean();
   }
+  
   const categoriesWithProducts = categories.filter(cat => cat.products.length > 0);
-  res.render('client/catalog', { commerce, categories: categoriesWithProducts });
-};
+  
+  const cart = req.session.cart || [];
+  
+  const subtotal = cart.reduce((sum, item) => sum + parseFloat(item.price), 0);
 
-res.render('client/catalog', { 
-  commerce, 
-  categories: categoriesWithProducts,
-  commerceId: commerce._id 
-});
+  const cartProductIds = cart.map(item => String(item.productId));
+  
+  for (let cat of categories) {
+    cat.products = await Product.find({ categoryId: cat._id, isActive: true }).lean();
+
+    cat.products.forEach(p => {
+      p.inCart = cartProductIds.includes(String(p._id));
+    });
+  }
+
+  res.render('client/catalog', { 
+    commerce, 
+    categories: categoriesWithProducts,
+    commerceId: commerce._id,
+    cart, 
+    subtotal 
+  });
+};
 
 export const addToCart = async (req, res) => {
   try {
-    const { productId } = req.body;
-    const commerceId = req.params.commerceId; // ← viene de la URL
+    const { productId, commerceId } = req.body; // ← viene de la URL
     
     console.log('Datos recibidos:', { productId, commerceId });
     
@@ -126,6 +161,7 @@ export const createOrder = async (req, res) => {
       productId: item.productId,
       productName: item.name,
       productPrice: item.price,
+      productImage: item.image,
       quantity: 1
     })),
     subtotal,

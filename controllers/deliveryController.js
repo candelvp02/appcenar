@@ -1,10 +1,12 @@
 import Order from '../models/Order.js';
 import User from '../models/User.js';
+import Address from '../models/Address.js';
 
 export const getHome = async (req, res) => {
   const orders = await Order.find({ deliveryId: req.session.user.id })
     .populate('commerceId')
-    .sort('-createdAt');
+    .sort('-createdAt')
+    .lean();
   res.render('delivery/home', { orders });
 };
 
@@ -12,8 +14,15 @@ export const getOrderDetail = async (req, res) => {
   const order = await Order.findOne({
     _id: req.params.id,
     deliveryId: req.session.user.id
-  }).populate('commerceId').populate('addressId').populate('items.productId');
-  
+  })
+    .populate('commerceId')
+    .populate('addressId')
+    .populate('items.productId')
+    .lean();
+
+  console.log("DIAGNÓSTICO DE LA ORDEN");
+  console.log("AddressId guardado:", order.addressId);
+
   if (!order) return res.redirect('/delivery/home');
   
   const showAddress = order.status === 'in_progress';
@@ -40,7 +49,7 @@ export const completeOrder = async (req, res) => {
 };
 
 export const getProfile = async (req, res) => {
-  const user = await User.findById(req.session.user.id);
+  const user = await User.findById(req.session.user.id).lean();
   res.render('delivery/profile', { user });
 };
 

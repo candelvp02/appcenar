@@ -61,6 +61,21 @@ import commerceRoutes from './routes/commerceRoutes.js';
 import deliveryRoutes from './routes/deliveryRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 
+app.get('/', (req, res) => {
+  // Si el usuario ya inició sesión, lo mandamos a su panel correspondiente
+  if (req.session && req.session.user) {
+    const role = req.session.user.role;
+    
+    if (role === 'admin') return res.redirect('/admin/dashboard');
+    if (role === 'commerce') return res.redirect('/comercio/home');
+    if (role === 'delivery') return res.redirect('/delivery/home');
+    if (role === 'client') return res.redirect('/cliente/home');
+  }
+  //si no, a login
+  res.redirect('/login'); 
+});
+
+// rutas
 app.use('/', authRoutes);
 app.use('/cliente', clientRoutes);
 app.use('/comercio', commerceRoutes);
