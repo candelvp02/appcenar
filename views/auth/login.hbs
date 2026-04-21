@@ -8,12 +8,12 @@
       <p>Inicia sesión para continuar</p>
     </div>
 
-    {{#each success}}
-      <div class="alert alert-success mb-3"><i class="bi bi-check-circle me-2"></i>{{this}}</div>
-    {{/each}}
-    {{#each error}}
-      <div class="alert alert-danger mb-3"><i class="bi bi-exclamation-circle me-2"></i>{{this}}</div>
-    {{/each}}
+{{#if success}}
+  <div class="alert alert-success mb-3"><i class="bi bi-check-circle me-2"></i>{{success}}</div>
+{{/if}}
+{{#if error}}
+  <div class="alert alert-danger mb-3"><i class="bi bi-exclamation-circle me-2"></i>{{error}}</div>
+{{/if}}
 
     <form action="/login" method="POST">
 <div class="mb-3">

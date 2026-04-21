@@ -68,7 +68,7 @@ export const postRegister = async (req, res) => {
       email,
       password,
       role: role,
-      isActive: true, // Para pruebas, activar automáticamente
+      isActive: false, // debe activar su cuenta con el correo
       firstName,
       lastName,
       phone,
@@ -94,7 +94,7 @@ export const postRegister = async (req, res) => {
       ? 'Delivery registrado exitosamente. Ya puedes iniciar sesión.'
       : 'Registro exitoso. Ya puedes iniciar sesión.';
     
-    res.render('auth/login', { success: successMessage });
+res.render('auth/login', { success: 'Registro exitoso. Revisa tu correo electrónico para activar tu cuenta antes de iniciar sesión.' });
     
   } catch (error) {
     console.error('Error en registro:', error);
@@ -133,7 +133,7 @@ export const postRegisterCommerce = async (req, res) => {
       email,
       password,
       role: 'commerce',
-      isActive: true, // Para pruebas, activar automáticamente
+      isActive: false, // el usuario debe activar su cuenta con su correo
       phone,
       activationToken: token
     });
@@ -167,7 +167,7 @@ export const postRegisterCommerce = async (req, res) => {
       console.error('Error enviando email:', emailError.message);
     }
     
-    res.render('auth/login', { success: 'Comercio registrado exitosamente. Ya puedes iniciar sesión.' });
+    res.render('auth/login', { success: 'Comercio registrado exitosamente. Revisa tu correo para activar la cuenta.' });
     
   } catch (error) {
     console.error('Error en registro de comercio:', error);

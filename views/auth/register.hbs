@@ -5,6 +5,13 @@
                 <h4 class="mb-0"><i class="fas fa-user-plus"></i> Registro de usuario</h4>
             </div>
             <div class="card-body">
+                {{#if error}}
+                  <div class="alert alert-danger mb-3"><i class="bi bi-exclamation-circle me-2"></i>{{error}}</div>
+                {{/if}}
+                {{#if success}}
+                  <div class="alert alert-success mb-3"><i class="bi bi-check-circle me-2"></i>{{success}}</div>
+                {{/if}}
+
                 <form action="/register" method="POST" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label class="form-label fw-bold">Tipo de usuario</label>
@@ -64,8 +71,8 @@
                         </div>
                     </div>
                     
-                    <button type="submit" class="btn btn-primary w-100">Registrarse</button>
-                    <a href="/login" class="btn btn-secondary w-100 mt-2">Volver al inicio</a>
+                    <button type="submit" class="btn btn-primary w-100 py-2">Registrarse</button>
+                    <a href="/login" class="btn btn-outline-secondary w-100 mt-2">¿Ya tienes cuenta? Inicia sesión</a>
                 </form>
             </div>
         </div>

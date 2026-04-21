@@ -1,67 +1,61 @@
 <div class="row justify-content-center">
     <div class="col-md-8">
         <div class="card shadow">
-            <div class="card-header bg-success text-white">
-                <h4 class="mb-0"><i class="fas fa-store"></i> Registro de comercio</h4>
+            <div class="card-header bg-dark text-white">
+                <h4 class="mb-0"><i class="fas fa-shop"></i> Registrar mi Comercio</h4>
             </div>
             <div class="card-body">
+                {{#if error}}
+                  <div class="alert alert-danger mb-3">{{error}}</div>
+                {{/if}}
+
                 <form action="/register-commerce" method="POST" enctype="multipart/form-data">
-                    <h5 class="mb-3">Datos del usuario</h5>
+                    <h5 class="border-bottom pb-2 mb-3">Datos del Administrador</h5>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="username" class="form-label">Nombre de usuario</label>
-                            <input type="text" class="form-control" id="username" name="username" value="{{body.username}}" required>
+                            <label class="form-label">Usuario</label>
+                            <input type="text" name="username" class="form-control" value="{{body.username}}" required>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="email" class="form-label">Correo electrónico</label>
-                            <input type="email" class="form-control" id="email" name="email" value="{{body.email}}" required>
+                            <label class="form-label">Correo electrónico</label>
+                            <input type="email" name="email" class="form-control" value="{{body.email}}" required>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="password" class="form-label">Contraseña</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="confirmPassword" class="form-label">Confirmar contraseña</label>
-                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
-                        </div>
-                    </div>
-                    <hr>
-                    <h5 class="mb-3">Datos del comercio</h5>
-                    <div class="mb-3">
-                        <label for="commerceName" class="form-label">Nombre del comercio</label>
-                        <input type="text" class="form-control" id="commerceName" name="commerceName" value="{{body.commerceName}}" required>
                     </div>
                     <div class="mb-3">
-                        <label for="commerceTypeId" class="form-label">Tipo de comercio</label>
-                        <select class="form-select" id="commerceTypeId" name="commerceTypeId" required>
-                            <option value="">Seleccionar...</option>
+                        <label class="form-label">Contraseña</label>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
+
+                    <h5 class="border-bottom pb-2 mb-3 mt-4">Datos del Establecimiento</h5>
+                    <div class="mb-3">
+                        <label class="form-label">Nombre del Comercio</label>
+                        <input type="text" name="commerceName" class="form-control" value="{{body.commerceName}}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tipo de Comercio</label>
+                        <select name="commerceTypeId" class="form-select" required>
+                            <option value="">Seleccione un tipo...</option>
                             {{#each commerceTypes}}
-                                <option value="{{_id}}">{{name}}</option>
+                                <option value="{{this._id}}">{{this.name}}</option>
                             {{/each}}
                         </select>
                     </div>
-                    <div class="mb-3">
-                        <label for="phone" class="form-label">Teléfono</label>
-                        <input type="tel" class="form-control" id="phone" name="phone" value="{{body.phone}}" required>
-                    </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="openingTime" class="form-label">Hora de apertura</label>
-                            <input type="time" class="form-control" id="openingTime" name="openingTime" value="{{body.openingTime}}" required>
+                            <label class="form-label">Horario Apertura</label>
+                            <input type="time" name="openingTime" class="form-control" value="{{body.openingTime}}" required>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="closingTime" class="form-label">Hora de cierre</label>
-                            <input type="time" class="form-control" id="closingTime" name="closingTime" value="{{body.closingTime}}" required>
+                            <label class="form-label">Horario Cierre</label>
+                            <input type="time" name="closingTime" class="form-control" value="{{body.closingTime}}" required>
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="logo" class="form-label">Logo del comercio</label>
-                        <input type="file" class="form-control" id="logo" name="logo" accept="image/*">
+                        <label class="form-label">Logo del Comercio</label>
+                        <input type="file" name="logo" class="form-control" accept="image/*">
                     </div>
-                    <button type="submit" class="btn btn-success">Registrar comercio</button>
-                    <a href="/login" class="btn btn-secondary">Volver</a>
+
+                    <button type="submit" class="btn btn-danger w-100 py-2 mt-3">Registrar Comercio</button>
                 </form>
             </div>
         </div>
