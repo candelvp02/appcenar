@@ -35,12 +35,15 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Categoría</label>
-                        <select name="categoryId" class="form-select" style="color: #000000 !important; background-color: #ffffff !important;" required>
-                            <option value="" style="color: #000000; background-color: #ffffff;">Seleccionar categoría</option>
-                            {{#each categories}}
-                                <option value="{{this._id}}" style="color: #000000; background-color: #ffffff;" {{#ifCond this._id '===' ../product.categoryId}}selected{{/ifCond}}>{{this.name}}</option>
-                            {{/each}}
-                        </select>
+<select name="categoryId" class="form-select" required>
+  <option value="" disabled selected>Seleccione una categoría...</option>
+  
+  {{#each categories}}
+    <option value="{{this.stringId}}" {{#if this.isSelected}}selected{{/if}}>
+      {{this.name}}
+    </option>
+  {{/each}}
+</select>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Imagen del producto</label>

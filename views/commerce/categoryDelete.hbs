@@ -7,7 +7,7 @@
             <div class="card-body">
                 <p>¿Está seguro que desea eliminar la categoría <strong>{{category.name}}</strong>?</p>
                 <p class="text-danger">Advertencia: Se eliminarán <strong>{{productCount}}</strong> productos de esta categoría.</p>
-                <form action="/comercio/categoria/eliminar/{{category._id}}" method="POST">
+<form action="/comercio/categoria/eliminar/{{category.stringId}}" method="POST">
                     <button type="submit" class="btn btn-danger">Sí, eliminar</button>
                     <a href="/comercio/categorias" class="btn btn-secondary">Cancelar</a>
                 </form>
