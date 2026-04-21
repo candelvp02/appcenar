@@ -1,25 +1,24 @@
 <div class="login-wrapper">
   <div class="login-card">
-    <div class="login-brand">
-      <div class="brand-icon">
-        <i class="bi bi-bag-heart-fill"></i>
-      </div>
-      <h2>App<span>Cenar</span></h2>
-      <p>Inicia sesión para continuar</p>
-    </div>
+    
+ <div class="login-brand text-center mb-4">
+  <img src="/images/logo.png" alt="Logo AppCenar" class="img-fluid" style="max-height: 150px;">
+  
+  <p class="text-muted mt-3">Inicia sesión para continuar</p>
+</div>
 
-{{#if success}}
-  <div class="alert alert-success mb-3"><i class="bi bi-check-circle me-2"></i>{{success}}</div>
-{{/if}}
-{{#if error}}
-  <div class="alert alert-danger mb-3"><i class="bi bi-exclamation-circle me-2"></i>{{error}}</div>
-{{/if}}
+    {{#if success}}
+      <div class="alert alert-success mb-3"><i class="bi bi-check-circle me-2"></i>{{success}}</div>
+    {{/if}}
+    {{#if error}}
+      <div class="alert alert-danger mb-3"><i class="bi bi-exclamation-circle me-2"></i>{{error}}</div>
+    {{/if}}
 
     <form action="/login" method="POST">
-<div class="mb-3">
-    <label for="usernameOrEmail" class="form-label">Usuario o correo electrónico</label>
-    <input type="text" class="form-control" id="usernameOrEmail" name="usernameOrEmail" value="{{usernameOrEmail}}" required>
-</div>
+      <div class="mb-3">
+        <label for="usernameOrEmail" class="form-label">Usuario o correo electrónico</label>
+        <input type="text" class="form-control" id="usernameOrEmail" name="usernameOrEmail" value="{{usernameOrEmail}}" required>
+      </div>
       <div class="mb-4">
         <label class="form-label">Contraseña</label>
         <input type="password" name="password" class="form-control" placeholder="••••••••" required />
@@ -48,5 +47,6 @@
         </a>
       </div>
     </div>
+    
   </div>
 </div>
