@@ -208,10 +208,18 @@ export const updateCommerceType = async (req, res) => {
 };
 
 export const confirmDeleteCommerceType = async (req, res) => {
-  const type = await CommerceType.findById(req.params.id);
-  if (!type) return res.redirect('/admin/tipos-comercio');
-  const commerceCount = await Commerce.countDocuments({ commerceTypeId: type._id });
-  res.render('admin/commerceTypeDelete', { type, commerceCount });
+  try {
+
+    const type = await CommerceType.findById(req.params.id).lean();
+    if (!type) return res.redirect('/admin/tipos-comercio');
+    const commerceCount = await Commerce.countDocuments({ commerceTypeId: type._id });
+    type.stringId = type._id.toString();
+    res.render('admin/commerceTypeDelete', { type, commerceCount });
+    
+  } catch (error) {
+    console.error(error);
+    res.redirect('/admin/tipos-comercio');
+  }
 };
 
 export const deleteCommerceType = async (req, res) => {

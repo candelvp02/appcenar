@@ -11,7 +11,7 @@
                         <th>Nombre</th>
                         <th>Apellido</th>
                         <th>Usuario</th>
-                        <th>Email</th>
+                        <th>Cédula</th> <th>Email</th>
                         <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
@@ -22,7 +22,7 @@
                         <td>{{admin.firstName}}</td>
                         <td>{{admin.lastName}}</td>
                         <td>{{admin.username}}</td>
-                        <td>{{admin.email}}</td>
+                        <td>{{admin.cedula}}</td> <td>{{admin.email}}</td>
                         <td>
                             {{#if admin.isActive}}
                                 <span class="badge bg-success">Activo</span>
@@ -30,25 +30,29 @@
                                 <span class="badge bg-danger">Inactivo</span>
                             {{/if}}
                         </td>
-                        <td>
-                            <a href="/admin/administrador/editar/{{admin._id}}" class="btn btn-info btn-sm">
-                                <i class="fas fa-edit"></i> Editar
-                            </a>
+<td>
+    {{#ifCond admin._id '!==' @root.currentUserId}}
+        <a href="/admin/administrador/editar/{{admin._id}}" class="btn btn-info btn-sm">
+            <i class="fas fa-edit"></i> Editar
+        </a>
 
-                            {{#ifCond admin._id '!==' @root.currentUserId}}
-                                <form action="/admin/administrador/{{admin._id}}/toggle" method="POST" style="display:inline;">
-                                    {{#if admin.isActive}}
-                                        <button type="submit" class="btn btn-warning btn-sm" onclick="return confirm('¿Inactivar este administrador?')">
-                                            Inactivar
-                                        </button>
-                                    {{else}}
-                                        <button type="submit" class="btn btn-success btn-sm">
-                                            Activar
-                                        </button>
-                                    {{/if}}
-                                </form>
-                            {{/ifCond}}
-                        </td>
+        <form action="/admin/administrador/{{admin._id}}/toggle" method="POST" style="display:inline;">
+            {{#if admin.isActive}}
+                <button type="submit" class="btn btn-warning btn-sm" onclick="return confirm('¿Inactivar este administrador?')">
+                    Inactivar
+                </button>
+            {{else}}
+                <button type="submit" class="btn btn-success btn-sm">
+                    Activar
+                </button>
+            {{/if}}
+        </form>
+    {{else}}
+        <span class="badge bg-secondary p-2" style="font-size: 0.85rem;">
+            <i class="fas fa-user-circle me-1"></i> Tu Cuenta
+        </span>
+    {{/ifCond}}
+</td>
                     </tr>
                     {{/each}}
                 </tbody>
