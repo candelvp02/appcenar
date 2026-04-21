@@ -1,27 +1,37 @@
 import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  },
+  tls: {
+    rejectUnauthorized: false 
+  }
+});
+
+transporter.verify((error, success) => {
+  if (error) {
+    console.error(' Error de Nodemailer:', error);
+  } else {
+    console.log(' Servidor de correos listo para AppCenar');
+  }
+});
 
 export const sendEmail = async (to, subject, html) => {
   try {
-    const transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST || 'smtp.gmail.com',
-      port: process.env.EMAIL_PORT || 587,              
-      secure: false,                                     
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
-    });
-
-    await transporter.sendMail({
+    const info = await transporter.sendMail({
       from: `"AppCenar" <${process.env.EMAIL_USER}>`,
       to,
       subject,
       html
     });
-    
-    console.log(`Correo enviado exitosamente a: ${to}`);
+    return info;
   } catch (error) {
-    console.error("Error detallado de Nodemailer:", error);
-    throw error;
+    throw new Error(error.message); 
   }
 };
