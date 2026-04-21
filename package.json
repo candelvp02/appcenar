@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "description": "App de pedidos",
   "main": "app.js",
+  "type": "module",
   "scripts": {
     "start": "node app.js",
     "dev": "cross-env NODE_ENV=development nodemon app.js",
     "qa": "cross-env NODE_ENV=qa node app.js",
     "prod": "cross-env NODE_ENV=production node app.js",
-    "seed": "cross-env NODE_ENV=development node utils/seed.js",
-    "type": "module"
+    "seed": "cross-env NODE_ENV=development node utils/seed.js"
+    
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
