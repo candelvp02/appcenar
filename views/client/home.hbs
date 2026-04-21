@@ -1,18 +1,36 @@
-<div class="container">
-    <h2 class="mb-4 text-center">¿Qué deseas comer hoy?</h2>
+<div class="container mt-4">
+    <h2 class="mb-5 text-center fw-bold" style="color: var(--dark-blue);">¿Qué deseas comer hoy?</h2>
     <div class="row">
         {{#each commerceTypes}}
         <div class="col-md-3 col-sm-6 mb-4">
             <a href="/cliente/comercios/tipo/{{this._id}}" class="text-decoration-none">
-                <div class="card text-center card-hover">
-                    <div class="card-body">
-                        <i class="fas fa-store fa-4x mb-3 text-primary"></i>
-                        <h5 class="card-title">{{this.name}}</h5>
-                        <p class="card-text text-muted">{{this.description}}</p>
+                <div class="card text-center shadow-sm h-100" style="transition: transform 0.2s; border-radius: 15px;">
+                    <div class="card-body py-4">
+                        
+                        {{#if this.icon}}
+                            <img src="/uploads/{{this.icon}}" alt="{{this.name}}" class="mb-3" style="width: 70px; height: 70px; object-fit: contain;">
+                        {{else}}
+                            <i class="fas fa-store fa-4x mb-3 text-primary"></i>
+                        {{/if}}
+                        
+                        <h5 class="card-title fw-bold text-dark">{{this.name}}</h5>
+                        <p class="card-text text-muted small">{{this.description}}</p>
                     </div>
                 </div>
             </a>
         </div>
+        {{else}}
+            <div class="col-12 text-center">
+                <div class="alert alert-info">Aún no hay categorías disponibles.</div>
+            </div>
         {{/each}}
     </div>
 </div>
+
+<style>
+  /* Para que la tarjeta flote al pasar el mouse */
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+  }
+</style>

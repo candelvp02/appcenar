@@ -16,25 +16,30 @@ export const getHome = async (req, res) => {
 export const getCommercesByType = async (req, res) => {
   try {
     const { typeId } = req.params;
-    const { search } = req.query;
-
+    
+    // 1. Buscamos los comercios de ese tipo
+    const commerces = await Commerce.find({ commerceTypeId: typeId, isActive: true }).lean();
     const commerceType = await CommerceType.findById(typeId).lean();
-    let filter = { commerceTypeId: typeId, isActive: true };
 
-    if (search) {
-      filter.name = { $regex: search, $options: 'i' }; 
-    }
+    // 2. Buscamos TODOS los favoritos de este usuario en la colección Favorite
+    const userFavorites = await Favorite.find({ userId: req.session.user.id }).lean();
+    
+    // Convertimos los favoritos en una lista simple de IDs para que sea fácil comparar
+    const favoriteCommerceIds = userFavorites.map(fav => fav.commerceId.toString());
+    const commercesWithFavorites = commerces.map(commerce => ({
+      ...commerce,
+      isFavorite: favoriteCommerceIds.includes(commerce._id.toString()) // True o False
+    }));
 
-    const commerces = await Commerce.find(filter).lean();
-
+    // 4. Enviamos la nueva lista a la vista
     res.render('client/commerceList', { 
-      commerceType, 
-      commerces, 
-      count: commerces.length,
-      search
+      commerces: commercesWithFavorites, 
+      commerceType,
+      count: commerces.length 
     });
+    
   } catch (error) {
-    console.error('Error al cargar los comercios:', error);
+    console.error(error);
     res.redirect('/cliente/home');
   }
 };
@@ -51,14 +56,17 @@ export const getCatalog = async (req, res) => {
   const categoriesWithProducts = categories.filter(cat => cat.products.length > 0);
   
   const cart = req.session.cart || [];
-  
   const subtotal = cart.reduce((sum, item) => sum + parseFloat(item.price), 0);
+  
+  
+  const config = await Configuration.findOne().lean();
+  const itbisPercent = config ? config.itbis : 18;
+  const itbis = subtotal * (itbisPercent / 100);
+  const total = subtotal + itbis;
 
   const cartProductIds = cart.map(item => String(item.productId));
-  
   for (let cat of categories) {
     cat.products = await Product.find({ categoryId: cat._id, isActive: true }).lean();
-
     cat.products.forEach(p => {
       p.inCart = cartProductIds.includes(String(p._id));
     });
@@ -69,7 +77,9 @@ export const getCatalog = async (req, res) => {
     categories: categoriesWithProducts,
     commerceId: commerce._id,
     cart, 
-    subtotal 
+    subtotal,
+    itbis, 
+    total 
   });
 };
 
@@ -227,13 +237,26 @@ export const getFavorites = async (req, res) => {
   const favorites = await Favorite.find({ userId: req.session.user.id }).populate('commerceId').lean();
   res.render('client/favorites', { favorites });
 };
-export const addFavorite = async (req, res) => {
-  const { commerceId } = req.body;
-  const exists = await Favorite.findOne({ userId: req.session.user.id, commerceId });
-  if (!exists) await Favorite.create({ userId: req.session.user.id, commerceId });
-  res.redirect('back');
-};
-export const removeFavorite = async (req, res) => {
-  await Favorite.findOneAndDelete({ userId: req.session.user.id, commerceId: req.params.commerceId });
-  res.redirect('back');
+export const toggleFavorite = async (req, res) => {
+  try {
+    const { commerceId } = req.body;
+    const userId = req.session.user.id;
+
+    // Buscamos si ya existe un registro de favorito para este usuario y comercio
+    const existingFavorite = await Favorite.findOne({ userId, commerceId });
+
+    if (existingFavorite) {
+      // Si existe, lo eliminamos (Corazón vacío)
+      await Favorite.findByIdAndDelete(existingFavorite._id);
+    } else {
+      // Si no existe, lo creamos (Corazón rojo)
+      await Favorite.create({ userId, commerceId });
+    }
+
+    // Recargamos la misma página donde el usuario hizo clic
+    res.redirect('back');
+  } catch (error) {
+    console.error('Error en toggleFavorite:', error);
+    res.redirect('back');
+  }
 };

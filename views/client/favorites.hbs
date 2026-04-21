@@ -1,29 +1,49 @@
-<div class="container">
-    <h2 class="mb-4">Mis Comercios Favoritos</h2>
+<div class="container mt-4">
+    <h2 class="mb-4 fw-bold" style="color: var(--dark-blue);">Mis Comercios Favoritos</h2>
     
     <div class="row">
         {{#each favorites}}
         <div class="col-md-4 mb-4">
-            <div class="card commerce-card" onclick="window.location.href='/cliente/catalogo/{{this.commerceId._id}}'">
+            <div class="card commerce-card shadow-sm h-100" style="border-radius: 15px; cursor: pointer; transition: transform 0.2s;" onclick="window.location.href='/cliente/catalogo/{{this.commerceId._id}}'">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center">
                             {{#if this.commerceId.logo}}
-                                <img src="/uploads/{{this.commerceId.logo}}" width="60" height="60" class="rounded-circle me-3">
+                                <img src="/uploads/{{this.commerceId.logo}}" width="60" height="60" class="rounded-circle me-3" style="object-fit: cover;">
                             {{else}}
-                                <i class="fas fa-store fa-3x me-3"></i>
+                                <i class="fas fa-store fa-3x me-3 text-primary"></i>
                             {{/if}}
-                            <h5 class="card-title">{{this.commerceId.name}}</h5>
+                            <h5 class="card-title mb-0 fw-bold text-dark">{{this.commerceId.name}}</h5>
                         </div>
-                        <form action="/cliente/favorito/remover/{{this.commerceId._id}}" method="POST" onclick="event.stopPropagation()">
-                            <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-heart-broken"></i> Remover</button>
+                        
+                        <form action="/cliente/favorito/toggle" method="POST" onclick="event.stopPropagation()">
+                            <input type="hidden" name="commerceId" value="{{this.commerceId._id}}">
+                            <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3">
+                                <i class="bi bi-heart-break-fill"></i> Remover
+                            </button>
                         </form>
+
                     </div>
                 </div>
             </div>
         </div>
         {{else}}
-        <div class="alert alert-info">No tienes comercios favoritos</div>
+        <div class="col-12">
+            <div class="text-center py-5 bg-light rounded-3">
+                <i class="bi bi-heart text-muted mb-3 d-block" style="font-size: 3rem;"></i>
+                <h5 class="text-muted">Aún no tienes comercios favoritos</h5>
+                <p class="text-muted mb-0">Explora las categorías y agrega los que más te gusten.</p>
+                <a href="/cliente/home" class="btn btn-primary mt-3">Explorar Comercios</a>
+            </div>
+        </div>
         {{/each}}
     </div>
 </div>
+
+<style>
+  /* Efecto hover sutil para la tarjeta */
+  .commerce-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+  }
+</style>

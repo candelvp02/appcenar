@@ -3,6 +3,7 @@ import { isAuthenticated, isRole } from '../middlewares/authMiddleware.js';
 import { upload } from '../utils/multerConfig.js';
 import * as clientController from '../controllers/clientController.js';
 
+
 const router = express.Router();
 router.use(isAuthenticated, isRole('client'));
 
@@ -26,7 +27,6 @@ router.post('/direccion/editar/:id', clientController.updateAddress);
 router.get('/direccion/eliminar/:id', clientController.confirmDeleteAddress);
 router.post('/direccion/eliminar/:id', clientController.deleteAddress);
 router.get('/mis-favoritos', clientController.getFavorites);
-router.post('/favorito/agregar', clientController.addFavorite);
-router.post('/favorito/remover/:commerceId', clientController.removeFavorite);
+router.post('/favorito/toggle', clientController.toggleFavorite);
 
 export default router;

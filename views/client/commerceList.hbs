@@ -26,10 +26,14 @@
         {{/if}}
         <span class="commerce-name" style="font-weight: 500;">{{name}}</span>
       </a>
-      <form action="/cliente/favorito/agregar" method="POST">
+<form action="/cliente/favorito/toggle" method="POST">
         <input type="hidden" name="commerceId" value="{{_id}}">
-        <button type="submit" class="fav-btn" style="background: none; border: none; cursor: pointer;" title="Agregar a favoritos">
-          <i class="bi bi-heart" style="font-size: 1.5rem; color: #ccc;"></i>
+        <button type="submit" class="fav-btn" style="background: none; border: none; cursor: pointer; transition: transform 0.2s;" title="Favoritos">
+          {{#if isFavorite}}
+            <i class="bi bi-heart-fill text-danger" style="font-size: 1.5rem; text-shadow: 0 2px 4px rgba(255,0,0,0.2);"></i>
+          {{else}}
+            <i class="bi bi-heart" style="font-size: 1.5rem; color: #ccc;"></i>
+          {{/if}}
         </button>
       </form>
     </div>

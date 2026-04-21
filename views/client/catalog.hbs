@@ -1,70 +1,107 @@
-<a href="javascript:history.back()" class="btn btn-secondary mb-3">Volver a comercios</a>
+<a href="/cliente/comercios/tipo/{{commerce.commerceTypeId}}" class="btn btn-secondary mb-3 text-decoration-none">
+    <i class="bi bi-arrow-left"></i> Volver a comercios
+</a>
+<div class="row">
+  <div class="col-md-8">
+    <div class="d-flex align-items-center gap-3 mb-4">
+      {{#if commerce.logo}}
+        <img src="/uploads/{{commerce.logo}}" width="60" height="60" class="rounded-circle shadow-sm" style="object-fit: cover;">
+      {{/if}}
+      <h2>{{commerce.name}}</h2>
+    </div>
 
-<div class="d-flex align-items-center gap-3 mb-4">
-  {{#if commerce.logo}}
-    <img src="/uploads/{{commerce.logo}}" width="60" height="60" class="rounded-circle">
-  {{/if}}
-  <h2>{{commerce.name}}</h2>
-</div>
-
-{{#each categories}}
-  <div class="mb-4">
-    <h4 class="border-bottom pb-2">{{name}}</h4>
-    <div class="row">
-      {{#each products}}
-      <div class="col-md-6 mb-3">
-        <div class="card">
-          <div class="row g-0">
-            <div class="col-md-4">
-              {{#if image}}
-                <img src="/uploads/{{image}}" class="img-fluid rounded-start" style="height: 120px; object-fit: cover; width: 100%;">
-              {{else}}
-                <div class="bg-light text-center p-3" style="height: 120px;"><i class="fas fa-image fa-2x mt-3"></i></div>
-              {{/if}}
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title">{{name}}</h5>
-                <p class="card-text">{{description}}</p>
-                <p class="card-text fw-bold">RD$ {{price}}</p>
-{{#if inCart}}
-  <button type="button" class="btn btn-secondary btn-sm" disabled><i class="bi bi-check"></i> Agregado</button>
-{{else}}
-  <form action="/cliente/carrito/agregar/{{@root.commerce._id}}" method="POST">
-    <input type="hidden" name="productId" value="{{_id}}">
-    <input type="hidden" name="commerceId" value="{{@root.commerce._id}}">
-    <button type="submit" class="btn btn-primary btn-sm">Agregar al carrito</button>
-  </form>
-{{/if}}
+    {{#each categories}}
+      <div class="mb-4">
+        <h4 class="border-bottom pb-2 text-primary">{{name}}</h4>
+        <div class="row">
+          {{#each products}}
+          <div class="col-md-6 mb-3">
+            <div class="card h-100 shadow-sm">
+              <div class="row g-0 h-100">
+                <div class="col-md-4">
+                  {{#if image}}
+                    <img src="/uploads/{{image}}" class="img-fluid rounded-start" style="height: 100%; object-fit: cover; width: 100%;">
+                  {{else}}
+                    <div class="bg-light text-center p-3 h-100 d-flex align-items-center justify-content-center"><i class="fas fa-image fa-2x text-muted"></i></div>
+                  {{/if}}
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{name}}</h5>
+                    <p class="card-text text-muted small flex-grow-1">{{description}}</p>
+                    <p class="card-text fw-bold text-danger">RD$ {{price}}</p>
+                    {{#if inCart}}
+                      <button type="button" class="btn btn-outline-secondary btn-sm w-100" disabled><i class="bi bi-check-circle-fill text-success"></i> Agregado</button>
+                    {{else}}
+                      <form action="/cliente/carrito/agregar/{{@root.commerce._id}}" method="POST" class="mt-auto">
+                        <input type="hidden" name="productId" value="{{_id}}">
+                        <input type="hidden" name="commerceId" value="{{@root.commerce._id}}">
+                        <button type="submit" class="btn btn-primary btn-sm w-100"><i class="bi bi-cart-plus"></i> Agregar</button>
+                      </form>
+                    {{/if}}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+          {{/each}}
         </div>
       </div>
-      {{/each}}
+    {{else}}
+      <div class="alert alert-warning">No hay productos disponibles en este comercio.</div>
+    {{/each}}
+  </div>
+
+  <div class="col-md-4">
+    <div class="card shadow sticky-top" style="top: 20px; border-top: 4px solid var(--orange);">
+      <div class="card-body">
+        
+        <div class="text-center mb-3 border-bottom pb-3">
+          {{#if commerce.logo}}
+            <img src="/uploads/{{commerce.logo}}" width="50" height="50" class="rounded-circle mb-2" style="object-fit: cover;">
+          {{/if}}
+          <h5 class="mb-0 fw-bold">{{commerce.name}}</h5>
+          <small class="text-muted">Mi Pedido</small>
+        </div>
+
+        <div id="cart-items">
+        {{#if cart.length}}
+          {{#each cart}}
+            <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+              <div class="text-truncate me-2" style="max-width: 65%;">
+                <span class="fw-medium" style="font-size: 0.9rem;">{{name}}</span>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <span class="text-muted small">RD$ {{price}}</span>
+                <form action="/cliente/carrito/remover" method="POST" class="m-0">
+                  <input type="hidden" name="productId" value="{{productId}}">
+                  <button type="submit" class="btn btn-sm btn-outline-danger py-0 px-1" title="Quitar"><i class="bi bi-x"></i></button>
+                </form>
+              </div>
+            </div>
+          {{/each}}
+
+          <div class="mt-3 pt-2">
+            <div class="d-flex justify-content-between text-muted small mb-1">
+              <span>Subtotal:</span> <span>RD$ {{subtotal}}</span>
+            </div>
+            <div class="d-flex justify-content-between text-muted small mb-2">
+              <span>ITBIS:</span> <span>RD$ {{itbis}}</span>
+            </div>
+            <div class="d-flex justify-content-between fw-bold fs-5 border-top pt-2">
+              <span>Total:</span> <span class="text-danger">RD$ {{total}}</span>
+            </div>
+          </div>
+
+          <a href="/cliente/checkout" class="btn btn-success mt-3 w-100 py-2 fw-bold"><i class="bi bi-bag-check me-2"></i> Procesar Pago</a>
+        {{else}}
+          <div class="text-center py-4">
+            <i class="bi bi-cart-x text-muted mb-2" style="font-size: 2rem;"></i>
+            <p class="text-muted mb-0">Tu carrito está vacío</p>
+          </div>
+        {{/if}}
+        </div>
+      </div>
     </div>
   </div>
-{{else}}
-  <div class="alert alert-warning">No hay productos disponibles.</div>
-{{/each}}
-
-<div class="mt-4 p-3 border rounded bg-light">
-  <h4>Mi Pedido</h4>
-  <div id="cart-items">
-  {{#if cart.length}}
-    {{#each cart}}
-      <div class="d-flex justify-content-between border-bottom py-1">
-        <span>{{name}}</span>
-        <span>RD$ {{price}}</span>
-        <form action="/cliente/carrito/remover" method="POST">
-          <input type="hidden" name="productId" value="{{productId}}">
-          <button type="submit" class="btn btn-sm btn-danger">X</button>
-        </form>
-      </div>
-    {{/each}}
-    <a href="/cliente/checkout" class="btn btn-success mt-2 w-100">Continuar a Checkout</a>
-  {{else}}
-    <p class="text-muted">No hay productos seleccionados</p>
-  {{/if}}
-</div>
 </div>
