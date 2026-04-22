@@ -1,37 +1,27 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  },
-  tls: {
-    rejectUnauthorized: false 
-  }
-});
-
-transporter.verify((error, success) => {
-  if (error) {
-    console.error(' Error de Nodemailer:', error);
-  } else {
-    console.log(' Servidor de correos listo para AppCenar');
-  }
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendEmail = async (to, subject, html) => {
   try {
-    const info = await transporter.sendMail({
-      from: `"AppCenar" <${process.env.EMAIL_USER}>`,
-      to,
-      subject,
-      html
+    const { data, error } = await resend.emails.send({
+      from: 'AppCenar <hola@appcenar.candelapereyra.site>', 
+      to: [to], 
+      subject: subject,
+      html: html
     });
-    return info;
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    console.log('✅ Correo enviado con éxito a:', to);
+    return data;
   } catch (error) {
-    throw new Error(error.message); 
+    console.error(' Error enviando email con Resend:', error);
+    throw new Error(error.message);
   }
 };
